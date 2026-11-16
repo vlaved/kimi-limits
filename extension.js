@@ -49,6 +49,19 @@ function windowUsed(value) {
   return null;
 }
 
+/** Время сброса из записи: ISO в resetTime/reset_at/resetAt/reset_time или секунды в reset_in/resetIn/ttl. */
+function resetsAtOf(value) {
+  if (!value || typeof value !== 'object') return null;
+  const iso = value.resetTime ?? value.reset_at ?? value.resetAt ?? value.reset_time;
+  if (iso) {
+    const when = new Date(iso);
+    if (!isNaN(when.getTime())) return when;
+  }
+  const sec = Number(value.reset_in ?? value.resetIn ?? value.ttl);
+  if (Number.isFinite(sec) && sec > 0) return new Date(Date.now() + sec * 1000);
+  return null;
+}
+
 /** Приводит разные форматы ответа API к единому виду:
  * { plan, limits: [{ name, nameGen, used, total, unit, resetsAt }] } */
 function normalizePayload(data) {
@@ -67,7 +80,7 @@ function normalizePayload(data) {
       total: total == null ? null : Number(total),
       unit: extra && extra.unit,
       nameGen: extra && extra.nameGen,
-      resetsAt: extra && (extra.resetsAt || extra.reset_at || extra.resetAt),
+      resetsAt: extra ? resetsAtOf(extra) : undefined,
     });
   };
 
@@ -97,7 +110,7 @@ function normalizePayload(data) {
         const used = windowUsed(value);
         if (used == null) continue;
         const naming = names[key] || [key, key];
-        push(naming[0], used, 100, { nameGen: naming[1], resetsAt: value.resetTime ?? value.reset_at ?? value.resetAt });
+        push(naming[0], used, 100, { ...value, nameGen: naming[1] });
       }
       return result;
     }
@@ -121,14 +134,14 @@ function normalizePayload(data) {
         const d = l && l.detail;
         if (!d || (d.limit == null && d.remaining == null)) continue;
         const name = rateLimitName(l.window);
-        push(name.nom, usedOf(d), d.limit, { resetsAt: d.resetTime, nameGen: name.gen });
+        push(name.nom, usedOf(d), d.limit, { ...d, nameGen: name.gen });
       }
     }
     if (kimiTotalQuota) {
-      push('Месячный лимит по подписке', usedOf(root.totalQuota), root.totalQuota.limit, { resetsAt: root.totalQuota.resetTime, nameGen: 'месячного лимита по подписке' });
+      push('Месячный лимит по подписке', usedOf(root.totalQuota), root.totalQuota.limit, { ...root.totalQuota, nameGen: 'месячного лимита по подписке' });
     }
     if (kimiUsage) {
-      push('Недельный лимит', usedOf(usage), usage.limit, { resetsAt: usage.resetTime, nameGen: 'недельного лимита' });
+      push('Недельный лимит', usedOf(usage), usage.limit, { ...usage, nameGen: 'недельного лимита' });
     }
     return result;
   }

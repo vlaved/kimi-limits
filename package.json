@@ -2,7 +2,7 @@
   "name": "kimi-limits",
   "displayName": "Kimi Limits",
   "description": "Показывает израсходованные лимиты вашего тарифа Kimi (Moonshot AI) в статус-баре VS Code.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "publisher": "vladimir-vedernikov",
   "author": { "name": "Vladimir Vedernikov" },
   "icon": "resources/icon.png",

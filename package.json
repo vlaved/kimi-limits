@@ -1,0 +1,68 @@
+{
+  "name": "kimi-limits",
+  "displayName": "Kimi Limits",
+  "description": "Показывает израсходованные лимиты вашего тарифа Kimi (Moonshot AI) в статус-баре VS Code.",
+  "version": "0.2.1",
+  "publisher": "vladimir-vedernikov",
+  "author": { "name": "Vladimir Vedernikov" },
+  "icon": "resources/icon.png",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Kimi Limits",
+      "properties": {
+        "kimiLimits.endpoint": {
+          "type": "string",
+          "default": "https://api.kimi.com/coding/v1/usages",
+          "description": "URL эндпоинта, возвращающего лимиты аккаунта (Kimi Coding API)."
+        },
+        "kimiLimits.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Ключ Kimi Code API (рекомендуется вместо этого использовать команду «Kimi Limits: Set API Key» — ключ будет храниться в защищённом хранилище)."
+        },
+        "kimiLimits.refreshIntervalMinutes": {
+          "type": "number",
+          "default": 5,
+          "minimum": 1,
+          "description": "Интервал автообновления (минуты)."
+        },
+        "kimiLimits.showInStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Показывать сводку в статус-баре."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "kimiLimits.refresh",
+        "title": "Kimi Limits: Refresh"
+      },
+      {
+        "command": "kimiLimits.setApiKey",
+        "title": "Kimi Limits: Set API Key"
+      },
+      {
+        "command": "kimiLimits.clearApiKey",
+        "title": "Kimi Limits: Clear API Key"
+      }
+    ]
+  },
+  "scripts": {
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.2.0"
+  }
+}

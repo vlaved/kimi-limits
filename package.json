@@ -5,6 +5,7 @@
   "version": "0.2.2",
   "publisher": "vladimir-vedernikov",
   "author": { "name": "Vladimir Vedernikov" },
+  "repository": { "type": "git", "url": "https://github.com/vlaved/kimi-limits.git" },
   "icon": "resources/icon.png",
   "license": "MIT",
   "engines": {

@@ -1,6 +1,6 @@
 # Kimi Limits
 
-[![release](https://img.shields.io/badge/release-v0.2.1-blue)](https://github.com/vlaved)
+[![github](https://img.shields.io/github/v/release/vlaved/kimi-limits?label=github&logo=github&color=blue)](https://github.com/vlaved/kimi-limits)
 
 Расширение для VS Code, показывающее израсходованные лимиты тарифа Kimi (Moonshot AI) в статус-баре.
 
